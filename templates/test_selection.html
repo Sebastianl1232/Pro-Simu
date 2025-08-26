@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Selecciona tu Simulacro</h1>
+        <p class="text-xl text-gray-600">Elige el tipo de prueba que deseas realizar</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 gap-8">
+        <!-- ICFES Option -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+            <div class="bg-blue-600 text-white p-6">
+                <i class="fas fa-school text-5xl mb-4"></i>
+                <h2 class="text-3xl font-bold">Saber ICFES</h2>
+                <p class="text-blue-100 mt-2">Prueba de grado 11</p>
+            </div>
+            <div class="p-6">
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span class="text-gray-700">20 preguntas</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span class="text-gray-700">Tiempo: 30 minutos</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span class="text-gray-700">Múltiples categorías</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span class="text-gray-700">Resultados inmediatos</span>
+                    </div>
+                </div>
+                <a href="{{ url_for('start_test', test_type='ICFES') }}" 
+                   class="w-full bg-blue-600 text-white py-3 rounded-lg text-center font-semibold hover:bg-blue-700 transition">
+                    Comenzar Simulacro ICFES
+                </a>
+            </div>
+        </div>
+
+        <!-- SaberPro Option -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+            <div class="bg-purple-600 text-white p-6">
+                <i class="fas fa-university text-5xl mb-4"></i>
+                <h2 class="text-3xl font-bold">SaberPro</h2>
+                <p class="text-purple-100 mt-2">Prueba de educación superior</p>
+            </div>
+            <div class="p-6">
+                <div class="space-y-3 mb-6">
+                    <div class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span class="text-gray-700">20 preguntas</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span class="text-gray-700">Tiempo: 30 minutos</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span class="text-gray-700">Competencias genéricas</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check text-green-500 mr-3"></i>
+                        <span class="text-gray-700">Análisis detallado</span>
+                    </div>
+                </div>
+                <a href="{{ url_for('start_test', test_type='SaberPro') }}" 
+                   class="w-full bg-purple-600 text-white py-3 rounded-lg text-center font-semibold hover:bg-purple-700 transition">
+                    Comenzar Simulacro SaberPro
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-12 bg-yellow-50 border border-yellow-200 rounded-lg p-6">
+        <div class="flex">
+            <i class="fas fa-info-circle text-yellow-600 text-2xl mr-4"></i>
+            <div>
+                <h3 class="text-lg font-semibold text-yellow-800 mb-2">Instrucciones importantes</h3>
+                <ul class="text-yellow-700 space-y-1">
+                    <li>• Cada simulacro tiene un tiempo límite de 30 minutos</li>
+                    <li>• Las preguntas se presentan en orden aleatorio</li>
+                    <li>• No puedes retroceder una vez respondida una pregunta</li>
+                    <li>• Al finalizar verás tus resultados y análisis detallado</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
