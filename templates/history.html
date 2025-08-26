@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Historial de Pruebas</title>
+</head>
+<body>
+    <h1>Historial de Pruebas</h1>
+    <table border="1">
+        <tr>
+            <th>Fecha</th>
+            <th>Tipo de Prueba</th>
+            <th>Puntaje</th>
+            <th>Correctas</th>
+            <th>Tiempo (segundos)</th>
+            <th>Ver Detalles</th>
+        </tr>
+        {% for result in results %}
+        <tr>
+            <td>{{ result.completed_at }}</td>
+            <td>{{ result.test_type }}</td>
+            <td>{{ result.score }}</td>
+            <td>{{ result.correct_answers }}/{{ result.total_questions }}</td>
+            <td>{{ result.time_taken }}</td>
+            <td><a href="{{ url_for('view_results', test_id=result.id) }}">Ver</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
