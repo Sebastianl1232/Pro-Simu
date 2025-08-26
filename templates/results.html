@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Header -->
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-gray-900 mb-4">Resultados de tu Simulacro</h1>
+        <p class="text-xl text-gray-600">{{ result.test_type }} - {{ result.completed_at.strftime('%d/%m/%Y %H:%M') }}</p>
+    </div>
+
+    <!-- Score Summary -->
+    <div class="bg-white rounded-lg shadow-lg p-8 mb-8">
+        <div class="grid md:grid-cols-4 gap-6 text-center">
+            <div>
+                <div class="text-4xl font-bold {% if result.score >= 70 %}text-green-600{% elif result.score >= 50 %}text-yellow-600{% else %}text-red-600{% endif %}">
+                    {{ "%.1f"|format(result.score) }}%
+                </div>
+                <p class="text-gray-600 mt-2">Puntuación</p>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-blue-600">{{ result.correct_answers }}</div>
+                <p class="text-gray-600 mt-2">Correctas</p>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-red-600">{{ result.total_questions - result.correct_answers }}</div>
+                <p class="text-gray-600 mt-2">Incorrectas</p>
+            </div>
+            <div>
+                <div class="text-4xl font-bold text-purple-600">{{ result.time_taken // 60 }}:{{ "%02d"|format(result.time_taken % 60) }}</div>
+                <p class="text-gray-600 mt-2">Tiempo</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Performance Message -->
+    <div class="mb-8">
+        {% if result.score >= 70 %}
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg">
+                <div class="flex">
+                    <i class="fas fa-trophy text-2xl mr-3"></i>
+                    <div>
+                        <p class="font-bold">¡Excelente trabajo!</p>
+                        <p>Tu puntuación está por encima del promedio. Sigue así.</p>
+                    </div>
+                </div>
+            </div>
+        {% elif result.score >= 50 %}
+            <div class="bg-yellow-100 border border-yellow-400 text-yellow-700 px-4 py-3 rounded-lg">
+                <div class="flex">
+                    <i class="fas fa-thumbs-up text-2xl mr-3"></i>
+                    <div>
+                        <p class="font-bold">Buen esfuerzo</p>
+                        <p>Estás en el camino correcto. Sigue practicando para mejorar.</p>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg">
+                <div class="flex">
+                    <i class="fas fa-redo text-2xl mr-3"></i>
+                    <div>
+                        <p class="font-bold">Necesitas practicar más</p>
+                        <p>No te desanimes. La práctica constante te ayudará a mejorar.</p>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Detailed Results -->
+    <div class="bg-white rounded-lg shadow-lg p-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-6">Análisis Detallado</h2>
+        
+        <div class="space-y-4">
+            {% for item in questions %}
+                <div class="border rounded-lg p-4 {% if item.is_correct %}bg-green-50 border-green-200{% else %}bg-red-50 border-red-200{% endif %}">
+                    <div class="flex justify-between items-start mb-3">
+                        <div class="flex-1">
+                            <span class="inline-block bg-gray-100 text-gray-800 text-sm font-semibold px-2 py-1 rounded mb-2">
+                                {{ item.question.category }}
+                            </span>
+                            <h3 class="font-semibold text-gray-900">{{ item.question.question_text }}</h3>
+                        </div>
+                        <div class="ml-4">
+                            {% if item.is_correct %}
+                                <i class="fas fa-check-circle text-2xl text-green-600"></i>
+                            {% else %}
+                                <i class="fas fa-times-circle text-2xl text-red-600"></i>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-4 text-sm">
+                        <div>
+                            <p class="font-medium text-gray-700 mb-1">Tu respuesta:</p>
+                            <p class="{% if item.is_correct %}text-green-600{% else %}text-red-600{% endif %}">
+                                {{ item.user_answer }}. {% if item.user_answer == 'A' %}{{ item.question.option_a }}{% elif item.user_answer == 'B' %}{{ item.question.option_b }}{% elif item.user_answer == 'C' %}{{ item.question.option_c }}{% elif item.user_answer == 'D' %}{{ item.question.option_d }}{% endif %}
+                            </p>
+                        </div>
+                        {% if not item.is_correct %}
+                            <div>
+                                <p class="font-medium text-gray-700 mb-1">Respuesta correcta:</p>
+                                <p class="text-green-600">
+                                    {{ item.question.correct_answer }}. {% if item.question.correct_answer == 'A' %}{{ item.question.option_a }}{% elif item.question.correct_answer == 'B' %}{{ item.question.option_b }}{% elif item.question.correct_answer == 'C' %}{{ item.question.option_c }}{% elif item.question.correct_answer == 'D' %}{{ item.question.option_d }}{% endif %}
+                                </p>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    {% if item.question.explanation %}
+                        <div class="mt-3 p-3 bg-blue-50 rounded-lg">
+                            <p class="text-sm text-blue-800">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                <strong>Explicación:</strong> {{ item.question.explanation }}
+                            </p>
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="{{ url_for('select_test') }}" class="bg-purple-600 text-white px-6 py-3 rounded-lg text-center hover:bg-purple-700 transition">
+            <i class="fas fa-redo mr-2"></i> Realizar otro simulacro
+        </a>
+        <a href="{{ url_for('dashboard') }}" class="bg-gray-600 text-white px-6 py-3 rounded-lg text-center hover:bg-gray-700 transition">
+            <i class="fas fa-home mr-2"></i> Volver al dashboard
+        </a>
+        <a href="{{ url_for('history') }}" class="bg-blue-600 text-white px-6 py-3 rounded-lg text-center hover:bg-blue-700 transition">
+            <i class="fas fa-history mr-2"></i> Ver historial
+        </a>
+    </div>
+</div>
+{% endblock %}
