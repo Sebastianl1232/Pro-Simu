@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- Progress Bar -->
+    <div class="mb-8">
+        <div class="flex justify-between items-center mb-2">
+            <span class="text-sm font-medium text-gray-700">Pregunta {{ question_number|default(1)|int }} de {{ total_questions|default(1)|int }}</span>
+            <span class="text-sm font-medium text-gray-700">
+                <i class="fas fa-clock mr-1"></i>
+                <span id="timer">{{ (time_elapsed|default(0)|int) // 60 }}:{{ "%02d"|format((time_elapsed|default(0)|int) % 60) }}</span>
+            </span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-purple-600 h-2 rounded-full transition-all duration-300" 
+                 style="width: {{ (question_number|default(1)|int / (total_questions|default(1)|int)) * 100 }}%"></div>
+        </div>
+    </div>
+
+    <!-- Question Card -->
+    <div class="bg-white rounded-lg shadow-lg p-8">
+        <div class="mb-6">
+            <span class="inline-block bg-purple-100 text-purple-800 text-sm font-semibold px-3 py-1 rounded-full mb-4">
+                {{ question.category }}
+            </span>
+            <h2 class="text-2xl font-bold text-gray-900">{{ question.question_text }}</h2>
+        </div>
+
+        <form id="questionForm" class="space-y-4">
+            <input type="hidden" name="question_id" value="{{ question.id }}">
+            
+            <div class="space-y-3">
+                <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition">
+                    <input type="radio" name="answer" value="A" class="mr-3 text-purple-600">
+                    <span class="text-gray-700">A. {{ question.option_a }}</span>
+                </label>
+                <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition">
+                    <input type="radio" name="answer" value="B" class="mr-3 text-purple-600">
+                    <span class="text-gray-700">B. {{ question.option_b }}</span>
+                </label>
+                <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition">
+                    <input type="radio" name="answer" value="C" class="mr-3 text-purple-600">
+                    <span class="text-gray-700">C. {{ question.option_c }}</span>
+                </label>
+                <label class="flex items-center p-4 border rounded-lg cursor-pointer hover:bg-gray-50 transition">
+                    <input type="radio" name="answer" value="D" class="mr-3 text-purple-600">
+                    <span class="text-gray-700">D. {{ question.option_d }}</span>
+                </label>
+            </div>
+
+            <div class="flex justify-between mt-8">
+                {% if question_number > 1 %}
+                    <button type="button" id="prevBtn" class="bg-gray-300 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-400 transition">
+                        <i class="fas fa-arrow-left mr-2"></i> Anterior
+                    </button>
+                {% else %}
+                    <div></div>
+                {% endif %}
+                
+                {% if question_number < total_questions %}
+                    <button type="submit" id="nextBtn" class="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700 transition">
+                        Siguiente <i class="fas fa-arrow-right ml-2"></i>
+                    </button>
+                {% else %}
+                    <button type="submit" id="finishBtn" class="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition">
+                        Finalizar Prueba <i class="fas fa-check ml-2"></i>
+                    </button>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+
+    <!-- Warning Modal -->
+    <div id="warningModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-6 max-w-md mx-4">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">¿Estás seguro?</h3>
+            <p class="text-gray-600 mb-6">Esta acción no se puede deshacer. ¿Deseas continuar?</p>
+            <div class="flex justify-end space-x-3">
+                <button onclick="closeWarningModal()" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition">
+                    Cancelar
+                </button>
+                <button id="confirmBtn" class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition">
+                    Confirmar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+let startTime = Date.now() - (parseInt("{{ time_elapsed|default(0)|int }}", 10) * 1000);
+let timerInterval;
+
+// Definir variables JS a partir de Jinja (siempre como números, usando parseInt para evitar errores)
+const questionNumber = parseInt("{{ question_number|default(1)|int }}", 10);
+const totalQuestions = parseInt("{{ total_questions|default(1)|int }}", 10);
+
+function updateTimer() {
+    const elapsed = Math.floor((Date.now() - startTime) / 1000);
+    const minutes = Math.floor(elapsed / 60);
+    const seconds = elapsed % 60;
+    document.getElementById('timer').textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    // Alerta si falta poco tiempo
+    if (elapsed > 1500) { // 25 minutos
+        document.getElementById('timer').classList.add('text-red-600', 'font-bold');
+    }
+}
+
+timerInterval = setInterval(updateTimer, 1000);
+
+document.getElementById('questionForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+    if (!selectedAnswer) {
+        alert('Por favor selecciona una respuesta');
+        return;
+    }
+    const formData = new FormData(this);
+    fetch('/submit_answer', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            if (questionNumber < totalQuestions) {
+                window.location.reload();
+            } else {
+                window.location.href = '/finish_test';
+            }
+        } else {
+            alert('Error al guardar la respuesta');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error al guardar la respuesta');
+    });
+});
+
+function closeWarningModal() {
+    document.getElementById('warningModal').classList.add('hidden');
+    document.getElementById('warningModal').classList.remove('flex');
+}
+
+// Limpiar el intervalo cuando se sale de la página
+window.addEventListener('beforeunload', function() {
+    clearInterval(timerInterval);
+});
+</script>
+{% endblock %}
