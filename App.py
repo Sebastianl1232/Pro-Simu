@@ -1,3 +1,4 @@
+
 from flask import render_template, request, redirect, url_for, flash, session, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
 from Database import app, init_database
@@ -142,6 +143,20 @@ def view_results(test_id):
 def history():
     results = TestResult.query.filter_by(user_id=current_user.id).order_by(TestResult.completed_at.desc()).all()
     return render_template('history.html', results=results)
+
+@app.route('/delete_result/<int:test_id>', methods=['POST'])
+@login_required
+def delete_result(test_id):
+    result = TestResult.query.get_or_404(test_id)
+    if result.user_id != current_user.id:
+        flash('No tienes permiso para eliminar este resultado')
+        return redirect(url_for('history'))
+    # Eliminar respuestas asociadas
+    TestAnswer.query.filter_by(test_result_id=test_id).delete()
+    db.session.delete(result)
+    db.session.commit()
+    flash('Resultado eliminado correctamente')
+    return redirect(url_for('history'))
 
 if __name__ == '__main__':
     init_database()
