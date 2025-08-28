@@ -16,7 +16,7 @@ class User(UserMixin, db.Model):
         return f'<User {self.username}>'
 
 class Question(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     test_type = db.Column(db.String(20), nullable=False)  # 'ICFES' o 'SaberPro'
     category = db.Column(db.String(50), nullable=False)
     question_text = db.Column(db.Text, nullable=False)
