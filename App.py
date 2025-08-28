@@ -134,8 +134,16 @@ def view_results(test_id):
     if result.user_id != current_user.id:
         flash('No tienes permiso para ver estos resultados')
         return redirect(url_for('dashboard'))
-    answers = TestAnswer.query.filter_by(test_result_id=test_id).all()
-    questions_with_answers = [{'question': Question.query.get(a.question_id), 'user_answer': a.user_answer, 'is_correct': a.is_correct} for a in answers]
+    answers = (
+        db.session.query(TestAnswer, Question)
+        .join(Question, TestAnswer.question_id == Question.id)
+        .filter(TestAnswer.test_result_id == test_id)
+        .all()
+    )
+    questions_with_answers = [
+        {'question': q, 'user_answer': a.user_answer, 'is_correct': a.is_correct}
+        for a, q in answers
+    ]
     return render_template('results.html', result=result, questions=questions_with_answers)
 
 @app.route('/history')
