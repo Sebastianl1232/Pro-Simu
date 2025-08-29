@@ -3,7 +3,7 @@ from flask_login import login_required
 
 
 
-from flask import render_template, request, redirect, url_for, flash, session, jsonify
+from flask import render_template, request, redirect, url_for, flash, session, jsonify, current_app
 from flask_login import login_user, logout_user, login_required, current_user
 from Database import app, init_database
 from Models import db, User, Question, TestResult, TestAnswer
@@ -57,7 +57,8 @@ def logout():
 @login_required
 def dashboard():
     results = TestResult.query.filter_by(user_id=current_user.id).order_by(TestResult.completed_at.desc()).limit(5).all()
-    return render_template('dashboard.html', results=results)
+    has_delete_account = 'delete_account' in current_app.view_functions
+    return render_template('dashboard.html', results=results, has_delete_account=has_delete_account)
 
 @app.route('/select_test')
 @login_required
@@ -157,7 +158,8 @@ def view_results(test_id):
 @login_required
 def history():
     results = TestResult.query.filter_by(user_id=current_user.id).order_by(TestResult.completed_at.desc()).all()
-    return render_template('history.html', results=results)
+    has_delete_account = 'delete_account' in current_app.view_functions
+    return render_template('history.html', results=results, has_delete_account=has_delete_account)
 
 @app.route('/delete_result/<int:test_id>', methods=['POST'])
 @login_required
@@ -176,7 +178,8 @@ def delete_result(test_id):
 @app.route('/change_password')
 @login_required
 def change_password():
-    return render_template('change_password.html')
+    has_delete_account = 'delete_account' in current_app.view_functions
+    return render_template('change_password.html', has_delete_account=has_delete_account)
 
 if __name__ == '__main__':
     init_database()
