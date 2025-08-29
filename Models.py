@@ -16,6 +16,10 @@ class User(UserMixin, db.Model):
     def __repr__(self):
         return f'<User {self.username}>'
 
+    @property
+    def is_profesor(self):
+        return self.role == 'profesor'
+
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     test_type = db.Column(db.String(20), nullable=False)  # 'ICFES' o 'SaberPro'
