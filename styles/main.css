@@ -5,39 +5,3 @@ body {
     margin: 0;
     padding: 0;
 }
-
-/* Menú lateral de cuenta personalizado */
-#cuentaSideMenu {
-    background: linear-gradient(135deg, #ff5a5f 0%, #764ba2 100%) !important;
-    border-top-left-radius: 2rem !important;
-    border-bottom-left-radius: 2rem !important;
-    box-shadow: 0 8px 32px rgba(118,75,162,0.15) !important;
-}
-#cuentaSideMenu a {
-    color: #fff !important;
-    background: rgba(255,255,255,0.08) !important;
-    margin-bottom: 1rem !important;
-    border-radius: 1rem !important;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s !important;
-}
-#cuentaSideMenu a:hover {
-    background: #fff !important;
-    color: #764ba2 !important;
-    box-shadow: 0 4px 16px rgba(255,90,95,0.10) !important;
-}
-#cuentaSideMenu .text-red-500 {
-    color: #ff5a5f !important;
-}
-#cuentaSideMenu .hover\:bg-red-100:hover {
-    background: #ffeaea !important;
-}
-#closeCuentaMenu {
-    color: #fff !important;
-    background: rgba(255,255,255,0.12) !important;
-    border-radius: 50% !important;
-    transition: background 0.2s, color 0.2s !important;
-}
-#closeCuentaMenu:hover {
-    background: #fff !important;
-    color: #ff5a5f !important;
-}
