@@ -181,6 +181,16 @@ def change_password():
     has_delete_account = 'delete_account' in current_app.view_functions
     return render_template('change_password.html', has_delete_account=has_delete_account)
 
+
+# Ruta para crear simulacro (solo profesores)
+@app.route('/crear_simulacro')
+@login_required
+def crear_simulacro():
+    if not getattr(current_user, 'is_profesor', False):
+        flash('Solo los profesores pueden acceder a esta página.')
+        return redirect(url_for('dashboard'))
+    return render_template('crear_simulacro.html')
+
 if __name__ == '__main__':
     init_database()
     app.run(debug=True)
