@@ -16,14 +16,17 @@ def index():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username, email, password = request.form['username'], request.form['email'], request.form['password']
+        username = request.form['username']
+        email = request.form['email']
+        password = request.form['password']
+        role = request.form.get('role', 'estudiante')
         if get_user_by('username', username):
             flash('El nombre de usuario ya existe')
         elif get_user_by('email', email):
             flash('El email ya está registrado')
         else:
             password_hash = bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
-            db.session.add(User(username=username, email=email, password_hash=password_hash))
+            db.session.add(User(username=username, email=email, password_hash=password_hash, role=role))
             db.session.commit()
             flash('Registro exitoso. Por favor inicia sesión.')
             return redirect(url_for('login'))
