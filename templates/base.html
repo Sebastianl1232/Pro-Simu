@@ -120,21 +120,26 @@
                 <button id="cuentaMenuButton" class="bg-red-400 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-red-500 transition font-semibold text-base focus:outline-none">
                     <i class="fas fa-user-cog text-lg"></i>
                 </button>
-                <!-- Menú lateral nuevo, fondo blanco sólido -->
-                <div id="cuentaSideMenu" class="fixed top-0 right-0 h-full w-64 z-50 transform translate-x-full transition-transform duration-300 flex flex-col pt-12 px-6 bg-white" style="max-width: 90vw;">
-                    <button id="closeCuentaMenu" class="self-end text-gray-500 hover:text-red-500 text-2xl mb-8 focus:outline-none"><i class="fas fa-times"></i></button>
-                    <a href="{{ url_for('dashboard') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-gray-800 hover:bg-gray-100 flex items-center">
-                        <i class="fas fa-user mr-3"></i>Mis datos
-                    </a>
-                    <a href="{{ url_for('change_password') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-gray-800 hover:bg-gray-100 flex items-center">
-                        <i class="fas fa-key mr-3"></i>Seguridad
-                    </a>
-                    {% if has_delete_account %}
-                    <a href="{{ url_for('delete_account') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-red-500 hover:bg-red-100 flex items-center">
-                        <i class="fas fa-trash-alt mr-3"></i>Borrar cuenta
-                    </a>
-                    {% endif %}
-                </div>
+                    <!-- Recuadro flotante al pasar el mouse por el botón de cuenta -->
+                    <div class="absolute right-0 top-1/2 -translate-y-1/2 bg-red-400 text-white px-8 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all whitespace-nowrap font-semibold text-lg flex items-center" style="min-width: 120px; min-height: 48px;">
+                        <span class="mr-2">CUENTA</span>
+                        <i class="fas fa-user-cog text-lg"></i>
+                    </div>
+                    <!-- Menú lateral nuevo, fondo degradado -->
+                    <div id="cuentaSideMenu" class="fixed top-0 right-0 h-full w-64 z-50 transform translate-x-full transition-transform duration-300 flex flex-col pt-12 px-6 bg-white" style="max-width: 90vw;">
+                        <button id="closeCuentaMenu" class="self-end text-gray-500 hover:text-red-500 text-2xl mb-8 focus:outline-none"><i class="fas fa-times"></i></button>
+                        <a href="{{ url_for('dashboard') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-gray-800 hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-user mr-3"></i>Mis datos
+                        </a>
+                        <a href="{{ url_for('change_password') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-gray-800 hover:bg-gray-100 flex items-center">
+                            <i class="fas fa-key mr-3"></i>Seguridad
+                        </a>
+                        {% if has_delete_account %}
+                        <a href="{{ url_for('delete_account') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-red-500 hover:bg-red-100 flex items-center">
+                            <i class="fas fa-trash-alt mr-3"></i>Borrar cuenta
+                        </a>
+                        {% endif %}
+                    </div>
             </div>
             <div class="relative group flex justify-center">
                 <a href="{{ url_for('logout') }}" class="bg-gray-800 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-gray-900 transition">
