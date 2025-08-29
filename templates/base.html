@@ -46,12 +46,12 @@
                         <a href="{{ url_for('history') }}" class="text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">
                             <i class="fas fa-history mr-1"></i> Historial
                         </a>
-                        <div class="relative group">
-                            <button class="flex items-center text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium">
+                        <div class="relative" id="userMenuContainer">
+                            <button id="userMenuButton" type="button" class="flex items-center text-gray-700 hover:text-purple-600 px-3 py-2 rounded-md text-sm font-medium focus:outline-none">
                                 <i class="fas fa-user mr-1"></i> {{ current_user.username }}
                                 <i class="fas fa-chevron-down ml-1"></i>
                             </button>
-                            <div class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden group-hover:block">
+                            <div id="userMenuDropdown" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
                                 <a href="{{ url_for('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                     <i class="fas fa-sign-out-alt mr-2"></i> Cerrar Sesión
                                 </a>
@@ -119,6 +119,24 @@
 
     <!-- Enlace a scripts locales -->
     <script src="/styles/main.js"></script>
+    <script>
+    // Menú de usuario: mostrar/ocultar con clic
+    document.addEventListener('DOMContentLoaded', function() {
+        var btn = document.getElementById('userMenuButton');
+        var menu = document.getElementById('userMenuDropdown');
+        if (btn && menu) {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                menu.classList.toggle('hidden');
+            });
+            document.addEventListener('click', function(e) {
+                if (!btn.contains(e.target) && !menu.contains(e.target)) {
+                    menu.classList.add('hidden');
+                }
+            });
+        }
+    });
+    </script>
     <script>
         // Configuración global de Tailwind
         tailwind.config = {
