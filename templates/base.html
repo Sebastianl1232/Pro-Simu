@@ -106,22 +106,31 @@
         {% else %}
         <!-- Botones flotantes de seguridad para usuario autenticado -->
         <div class="fixed right-8 top-1/3 flex flex-col space-y-4 z-50">
-    <div class="relative group flex justify-center">
-        <a href="{{ url_for('dashboard') }}" class="bg-red-500 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-red-600 transition">
-            <i class="fas fa-home text-lg"></i>
-        </a>
-        <div class="absolute right-0 top-1/2 -translate-y-1/2 bg-red-500 text-white px-8 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all whitespace-nowrap font-semibold text-lg flex items-center" style="min-width: 120px; min-height: 48px;">
-            <span class="mr-2">INICIO</span>
-            <i class="fas fa-home text-lg"></i>
-        </div>
-    </div>
             <div class="relative group flex justify-center">
-                <a href="{{ url_for('change_password') }}" class="bg-yellow-400 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-yellow-500 transition">
-                    <i class="fas fa-key text-lg"></i>
+                <a href="{{ url_for('dashboard') }}" class="bg-red-500 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-red-600 transition">
+                    <i class="fas fa-home text-lg"></i>
                 </a>
-                <div class="absolute right-0 top-1/2 -translate-y-1/2 bg-yellow-400 text-white px-8 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all whitespace-nowrap font-semibold text-lg flex items-center" style="min-width: 160px; min-height: 48px;">
-                    <span class="mr-2">CAMBIAR CONTRASEÑA</span>
-                    <i class="fas fa-key text-lg"></i>
+                <div class="absolute right-0 top-1/2 -translate-y-1/2 bg-red-500 text-white px-8 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all whitespace-nowrap font-semibold text-lg flex items-center" style="min-width: 120px; min-height: 48px;">
+                    <span class="mr-2">INICIO</span>
+                    <i class="fas fa-home text-lg"></i>
+                </div>
+            </div>
+            <!-- Botón de Cuenta con menú -->
+            <div class="relative group flex justify-center">
+                <button id="cuentaMenuButton" class="bg-red-400 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-red-500 transition font-semibold text-base focus:outline-none">
+                    <i class="fas fa-user-cog text-lg"></i>
+                </button>
+                <div class="absolute right-0 top-1/2 -translate-y-1/2 bg-red-400 text-white px-8 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all whitespace-nowrap font-semibold text-lg flex items-center z-50" style="min-width: 120px; min-height: 48px; margin-left: 3.5rem;">
+                    <span class="mr-2">CUENTA</span>
+                    <i class="fas fa-user-cog text-lg"></i>
+                </div>
+
+                </button>
+                <!-- Menú desplegable -->
+                <div id="cuentaMenuDropdown" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white text-gray-800 px-6 py-3 rounded-md shadow-lg opacity-0 pointer-events-none transition-all whitespace-nowrap font-semibold text-base flex flex-col space-y-2 z-50 min-w-[180px] min-h-[48px]">
+                    <a href="{{ url_for('change_password') }}" class="flex items-center hover:text-yellow-500 transition">
+                        <i class="fas fa-key mr-2"></i> Cambiar contraseña
+                    </a>
                 </div>
             </div>
             <div class="relative group flex justify-center">
@@ -181,6 +190,23 @@
             document.addEventListener('click', function(e) {
                 if (!btn.contains(e.target) && !menu.contains(e.target)) {
                     menu.classList.add('hidden');
+                }
+            });
+        }
+
+        // Menú de cuenta flotante
+        var cuentaBtn = document.getElementById('cuentaMenuButton');
+        var cuentaMenu = document.getElementById('cuentaMenuDropdown');
+        if (cuentaBtn && cuentaMenu) {
+            cuentaBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                cuentaMenu.classList.toggle('opacity-0');
+                cuentaMenu.classList.toggle('pointer-events-none');
+            });
+            document.addEventListener('click', function(e) {
+                if (!cuentaBtn.contains(e.target) && !cuentaMenu.contains(e.target)) {
+                    cuentaMenu.classList.add('opacity-0');
+                    cuentaMenu.classList.add('pointer-events-none');
                 }
             });
         }
