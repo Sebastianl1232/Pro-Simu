@@ -183,13 +183,48 @@ def change_password():
 
 
 # Ruta para crear simulacro (solo profesores)
-@app.route('/crear_simulacro')
+from flask import session
+
+@app.route('/crear_simulacro', methods=['GET', 'POST'])
 @login_required
 def crear_simulacro():
     if not getattr(current_user, 'is_profesor', False):
         flash('Solo los profesores pueden acceder a esta página.')
         return redirect(url_for('dashboard'))
-    return render_template('crear_simulacro.html')
+
+    # Inicializar lista de preguntas en sesión si no existe
+    if 'simulacro_preguntas' not in session:
+        session['simulacro_preguntas'] = []
+
+    if request.method == 'POST':
+        # Recoger datos del formulario
+        pregunta = {
+            'test_type': request.form.get('test_type', ''),
+            'category': request.form.get('category', ''),
+            'question_text': request.form.get('question_text', ''),
+            'option_a': request.form.get('option_a', ''),
+            'option_b': request.form.get('option_b', ''),
+            'option_c': request.form.get('option_c', ''),
+            'option_d': request.form.get('option_d', ''),
+            'correct_answer': request.form.get('correct_answer', ''),
+            'explanation': request.form.get('explanation', '')
+        }
+        preguntas = session['simulacro_preguntas']
+        preguntas.append(pregunta)
+        session['simulacro_preguntas'] = preguntas
+        flash('Pregunta agregada. Puedes seguir añadiendo más o guardar el simulacro.')
+
+    # Guardar todas las preguntas en la base de datos
+    if request.args.get('guardar') == '1' and session.get('simulacro_preguntas'):
+        for p in session['simulacro_preguntas']:
+            db.session.add(Question(**p))
+        db.session.commit()
+        session.pop('simulacro_preguntas', None)
+        flash('Simulacro guardado exitosamente.')
+        return redirect(url_for('dashboard'))
+
+    preguntas = session.get('simulacro_preguntas', [])
+    return render_template('crear_simulacro.html', preguntas=preguntas)
 
 if __name__ == '__main__':
     init_database()
