@@ -124,18 +124,10 @@
                 <div id="cuentaSideMenu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col pt-12 px-6" style="max-width: 90vw;">
                     <button id="closeCuentaMenu" class="self-end text-gray-500 hover:text-red-500 text-2xl mb-8 focus:outline-none"><i class="fas fa-times"></i></button>
                     <a href="{{ url_for('dashboard') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-gray-800 hover:bg-gray-100 flex items-center"><i class="fas fa-user mr-3"></i>Mis datos</a>
-                    <a href="{{ url_for('change_password') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-gray-800 hover:bg-gray-100 flex items-center"><i class="fas fa-key mr-3"></i>Contraseña</a>
+                    <a href="{{ url_for('change_password') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-gray-800 hover:bg-gray-100 flex items-center"><i class="fas fa-key mr-3"></i>Seguridad</a>
                     {% if has_delete_account %}
                     <a href="{{ url_for('delete_account') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-red-500 hover:bg-red-100 flex items-center"><i class="fas fa-trash-alt mr-3"></i>Borrar cuenta</a>
                     {% endif %}
-                </div>
-
-                </button>
-                <!-- Menú desplegable -->
-                <div id="cuentaMenuDropdown" class="absolute right-0 top-1/2 -translate-y-1/2 bg-white text-gray-800 px-6 py-3 rounded-md shadow-lg opacity-0 pointer-events-none transition-all whitespace-nowrap font-semibold text-base flex flex-col space-y-2 z-50 min-w-[180px] min-h-[48px]">
-                    <a href="{{ url_for('change_password') }}" class="flex items-center hover:text-yellow-500 transition">
-                        <i class="fas fa-key mr-2"></i> Cambiar contraseña
-                    </a>
                 </div>
             </div>
             <div class="relative group flex justify-center">
@@ -226,22 +218,7 @@
             });
         }
 
-        // Menú de cuenta flotante
-        var cuentaBtn = document.getElementById('cuentaMenuButton');
-        var cuentaMenu = document.getElementById('cuentaMenuDropdown');
-        if (cuentaBtn && cuentaMenu) {
-            cuentaBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                cuentaMenu.classList.toggle('opacity-0');
-                cuentaMenu.classList.toggle('pointer-events-none');
-            });
-            document.addEventListener('click', function(e) {
-                if (!cuentaBtn.contains(e.target) && !cuentaMenu.contains(e.target)) {
-                    cuentaMenu.classList.add('opacity-0');
-                    cuentaMenu.classList.add('pointer-events-none');
-                }
-            });
-        }
+    // (Eliminado menú de cuenta flotante)
     });
     </script>
     <script>
