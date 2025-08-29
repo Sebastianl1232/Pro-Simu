@@ -134,6 +134,11 @@
                         <a href="{{ url_for('change_password') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-gray-800 hover:bg-gray-100 flex items-center">
                             <i class="fas fa-key mr-3"></i>Seguridad
                         </a>
+                        {% if current_user.is_profesor %}
+                        <a href="{{ url_for('crear_simulacro') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-blue-700 hover:bg-blue-50 flex items-center">
+                            <i class="fas fa-plus mr-3"></i>Crear simulacro
+                        </a>
+                        {% endif %}
                         {% if has_delete_account %}
                         <a href="{{ url_for('delete_account') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-red-500 hover:bg-red-100 flex items-center">
                             <i class="fas fa-trash-alt mr-3"></i>Borrar cuenta
