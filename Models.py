@@ -10,6 +10,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password_hash = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    role = db.Column(db.String(20), nullable=False, default='user')  # 'user' o 'admin'
     test_results = db.relationship('TestResult', backref='user', lazy=True)
 
     def __repr__(self):
