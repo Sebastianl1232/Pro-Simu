@@ -23,7 +23,18 @@
     <div class="fixed right-8 top-1/3 flex flex-col space-y-4 z-50">
         <a href="#" class="bg-red-500 text-white rounded-full p-4 shadow-lg hover:bg-red-600 transition"><i class="fas fa-home fa-lg"></i></a>
         <a href="#" class="bg-white text-gray-700 rounded-full p-4 shadow-lg hover:bg-gray-200 transition"><i class="fas fa-user fa-lg"></i></a>
+        {% if not current_user.is_authenticated %}
+        <div class="relative group flex justify-center">
+            <a href="{{ url_for('register') }}" class="bg-gray-200 text-gray-700 rounded-full p-4 shadow-lg hover:bg-gray-300 transition flex items-center justify-center">
+                <i class="fas fa-lock fa-lg"></i>
+            </a>
+            <div class="absolute right-full top-1/2 -translate-y-1/2 mr-3 bg-red-500 text-white px-4 py-2 rounded-lg shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity whitespace-nowrap font-semibold text-sm">
+                REGISTRO
+            </div>
+        </div>
+        {% else %}
         <a href="#" class="bg-gray-200 text-gray-700 rounded-full p-4 shadow-lg hover:bg-gray-300 transition"><i class="fas fa-lock fa-lg"></i></a>
+        {% endif %}
     </div>
 </div>
 
