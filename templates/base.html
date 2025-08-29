@@ -120,9 +120,14 @@
                 <button id="cuentaMenuButton" class="bg-red-400 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg hover:bg-red-500 transition font-semibold text-base focus:outline-none">
                     <i class="fas fa-user-cog text-lg"></i>
                 </button>
-                <div class="absolute right-0 top-1/2 -translate-y-1/2 bg-red-400 text-white px-8 py-3 rounded-full shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none transition-all whitespace-nowrap font-semibold text-lg flex items-center z-50" style="min-width: 120px; min-height: 48px; margin-left: 3.5rem;">
-                    <span class="mr-2">CUENTA</span>
-                    <i class="fas fa-user-cog text-lg"></i>
+                <!-- Menú lateral oculto por defecto -->
+                <div id="cuentaSideMenu" class="fixed top-0 right-0 h-full w-64 bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 flex flex-col pt-12 px-6" style="max-width: 90vw;">
+                    <button id="closeCuentaMenu" class="self-end text-gray-500 hover:text-red-500 text-2xl mb-8 focus:outline-none"><i class="fas fa-times"></i></button>
+                    <a href="{{ url_for('dashboard') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-gray-800 hover:bg-gray-100 flex items-center"><i class="fas fa-user mr-3"></i>Mis datos</a>
+                    <a href="{{ url_for('change_password') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-gray-800 hover:bg-gray-100 flex items-center"><i class="fas fa-key mr-3"></i>Contraseña</a>
+                    {% if has_delete_account %}
+                    <a href="{{ url_for('delete_account') }}" class="mb-4 py-3 px-4 rounded-lg text-lg font-semibold text-red-500 hover:bg-red-100 flex items-center"><i class="fas fa-trash-alt mr-3"></i>Borrar cuenta</a>
+                    {% endif %}
                 </div>
 
                 </button>
@@ -178,6 +183,33 @@
     <!-- Enlace a scripts locales -->
     <script src="/styles/main.js"></script>
     <script>
+    // Menú lateral de cuenta
+    document.addEventListener('DOMContentLoaded', function() {
+        var cuentaBtn = document.getElementById('cuentaMenuButton');
+        var sideMenu = document.getElementById('cuentaSideMenu');
+        var closeBtn = document.getElementById('closeCuentaMenu');
+        if (cuentaBtn && sideMenu) {
+            cuentaBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                sideMenu.classList.remove('translate-x-full');
+            });
+            if (closeBtn) {
+                closeBtn.addEventListener('click', function() {
+                    sideMenu.classList.add('translate-x-full');
+                });
+            }
+            // Cerrar menú al hacer clic fuera
+            document.addEventListener('click', function(e) {
+                if (!sideMenu.contains(e.target) && !cuentaBtn.contains(e.target)) {
+                    sideMenu.classList.add('translate-x-full');
+                }
+            });
+            // Evitar cierre al hacer clic dentro del menú
+            sideMenu.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+        }
+    });
     // Menú de usuario: mostrar/ocultar con clic
     document.addEventListener('DOMContentLoaded', function() {
         var btn = document.getElementById('userMenuButton');
