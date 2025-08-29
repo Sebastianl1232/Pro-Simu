@@ -1,3 +1,7 @@
+# Ruta para cambiar contraseña
+from flask_login import login_required
+
+
 
 from flask import render_template, request, redirect, url_for, flash, session, jsonify
 from flask_login import login_user, logout_user, login_required, current_user
@@ -168,6 +172,11 @@ def delete_result(test_id):
     db.session.commit()
     flash('Resultado eliminado correctamente')
     return redirect(url_for('history'))
+
+@app.route('/change_password')
+@login_required
+def change_password():
+    return render_template('change_password.html')
 
 if __name__ == '__main__':
     init_database()
