@@ -9,15 +9,6 @@
 
     <!-- Quick Actions -->
     <div class="grid md:grid-cols-2 gap-6 mb-8">
-        <a href="{{ url_for('start_test', test_type='ICFES') }}" class="bg-blue-600 text-white rounded-lg p-6 hover:bg-blue-700 transition card-hover">
-            <div class="flex items-center justify-between">
-                <div>
-                    <h3 class="text-xl font-semibold">Simulacro Saber ICFES</h3>
-                    <p class="text-blue-100 mt-2">Prueba para grado 11</p>
-                </div>
-                <i class="fas fa-play-circle text-4xl text-blue-200"></i>
-            </div>
-        </a>
         <a href="{{ url_for('start_test', test_type='SaberPro') }}" class="bg-purple-600 text-white rounded-lg p-6 hover:bg-purple-700 transition card-hover">
             <div class="flex items-center justify-between">
                 <div>
@@ -44,7 +35,7 @@
                     <div class="border rounded-lg p-4 hover:bg-gray-50 transition">
                         <div class="flex justify-between items-center">
                             <div>
-                                <h3 class="font-semibold text-gray-900">{{ result.test_type }}</h3>
+                                <h3 class="font-semibold text-gray-900">SaberPro</h3>
                                 <p class="text-sm text-gray-600">{{ result.completed_at.strftime('%d/%m/%Y %H:%M') }}</p>
                             </div>
                             <div class="text-right">
