@@ -63,22 +63,24 @@ def dashboard():
 @app.route('/select_test')
 @login_required
 def select_test():
-    return render_template('test_selection.html')
+    # Solo mostrar SaberPro como opción
+    return render_template('test_selection.html', test_types=['SaberPro'])
 
 @app.route('/start_test/<test_type>')
 @login_required
 def start_test(test_type):
-    if test_type not in ['ICFES', 'SaberPro']:
+    # Solo permitir SaberPro
+    if test_type != 'SaberPro':
         flash('Tipo de prueba no válido')
         return redirect(url_for('select_test'))
-    questions = Question.query.filter_by(test_type=test_type).all()
+    questions = Question.query.filter_by(test_type='SaberPro').all()
     if not questions:
         flash('No hay preguntas disponibles para esta prueba')
         return redirect(url_for('select_test'))
     random.shuffle(questions)
     session.update({
         'test_questions': [q.id for q in questions],
-        'test_type': test_type,
+        'test_type': 'SaberPro',
         'test_start_time': datetime.utcnow().isoformat(),
         'current_question': 0,
         'answers': {}
@@ -192,14 +194,13 @@ def crear_simulacro():
         flash('Solo los profesores pueden acceder a esta página.')
         return redirect(url_for('dashboard'))
 
-    # Inicializar lista de preguntas en sesión si no existe
     if 'simulacro_preguntas' not in session:
         session['simulacro_preguntas'] = []
 
     if request.method == 'POST':
-        # Recoger datos del formulario
+        # Fijar test_type como SaberPro
         pregunta = {
-            'test_type': request.form.get('test_type', ''),
+            'test_type': 'SaberPro',
             'category': request.form.get('category', ''),
             'question_text': request.form.get('question_text', ''),
             'option_a': request.form.get('option_a', ''),
@@ -214,7 +215,6 @@ def crear_simulacro():
         session['simulacro_preguntas'] = preguntas
         flash('Pregunta agregada. Puedes seguir añadiendo más o guardar el simulacro.')
 
-    # Guardar todas las preguntas en la base de datos
     if request.args.get('guardar') == '1' and session.get('simulacro_preguntas'):
         for p in session['simulacro_preguntas']:
             db.session.add(Question(**p))
