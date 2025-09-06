@@ -83,8 +83,8 @@ def init_database():
                     'explanation': 'Los textos expositivos buscan informar y explicar un tema de manera objetiva'
                 }
             ]
-            
-            for q_data in icfes_questions + saberpro_questions:
+
+            for q_data in saberpro_questions:
                 question = Question(**q_data)
                 db.session.add(question)
             
