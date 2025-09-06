@@ -25,65 +25,6 @@ def init_database():
         
         # Insertar preguntas de ejemplo si no existen
         if Question.query.count() == 0:
-            # Preguntas para Saber ICFES
-            icfes_questions = [
-                {
-                    'test_type': 'ICFES',
-                    'category': 'Matemáticas',
-                    'question_text': 'Si x + 5 = 12, ¿cuál es el valor de x?',
-                    'option_a': '5',
-                    'option_b': '7',
-                    'option_c': '17',
-                    'option_d': '2',
-                    'correct_answer': 'B',
-                    'explanation': 'x + 5 = 12, entonces x = 12 - 5 = 7'
-                },
-                {
-                    'test_type': 'ICFES',
-                    'category': 'Lenguaje',
-                    'question_text': '¿Cuál de las siguientes palabras es un sinónimo de "rápido"?',
-                    'option_a': 'Lento',
-                    'option_b': 'Veloz',
-                    'option_c': 'Tranquilo',
-                    'option_d': 'Pesado',
-                    'correct_answer': 'B',
-                    'explanation': 'Veloz es un sinónimo de rápido'
-                },
-                {
-                    'test_type': 'ICFES',
-                    'category': 'Ciencias',
-                    'question_text': '¿Cuál es el planeta más cercano al Sol?',
-                    'option_a': 'Venus',
-                    'option_b': 'Tierra',
-                    'option_c': 'Mercurio',
-                    'option_d': 'Marte',
-                    'correct_answer': 'C',
-                    'explanation': 'Mercurio es el planeta más cercano al Sol'
-                },
-                {
-                    'test_type': 'ICFES',
-                    'category': 'Matemáticas',
-                    'question_text': '¿Cuál es el resultado de 2³?',
-                    'option_a': '6',
-                    'option_b': '8',
-                    'option_c': '9',
-                    'option_d': '4',
-                    'correct_answer': 'B',
-                    'explanation': '2³ = 2 × 2 × 2 = 8'
-                },
-                {
-                    'test_type': 'ICFES',
-                    'category': 'Lenguaje',
-                    'question_text': 'En la oración "El gato subió al árbol", ¿cuál es el sujeto?',
-                    'option_a': 'subió',
-                    'option_b': 'al árbol',
-                    'option_c': 'El gato',
-                    'option_d': 'árbol',
-                    'correct_answer': 'C',
-                    'explanation': 'El sujeto es quien realiza la acción, en este caso "El gato"'
-                }
-            ]
-            
             # Preguntas para SaberPro
             saberpro_questions = [
                 {
